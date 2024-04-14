@@ -1,5 +1,7 @@
 package datastructures.linkedlist;
 
+import java.util.HashSet;
+
 public class LinkedList {
     private Node head;
     private Node tail;
@@ -261,6 +263,122 @@ public class LinkedList {
             temp.next = before;
             before = temp;
             temp = after;
+        }
+    }
+
+    /**
+     * Make the linked list empty
+     */
+    public void makeEmpty() {
+        head = null;
+        tail = null;
+    }
+
+    /**
+     * Find the middle node of the linked list without using the length
+     * If the list has an odd number of nodes, the method should return the middle node.
+     * If the list has an even number of nodes, the method should return the second middle node.
+     * @return the middle node
+     */
+    public Node findMiddleNode() {
+        Node slow = head;
+        Node fast = head;
+        // brute force version
+//        if(fast == null) return null;
+//        if(fast.next == null) {
+//            return slow;
+//        }
+//        if (fast.next.next == null) {
+//            return slow.next;
+//        }
+//        while (fast.next != null) {
+//            slow = slow.next;
+//            if(fast.next.next == null) {
+//                break;
+//            }
+//            fast = fast.next.next;
+//        }
+//        return slow;
+        // Optimized version
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    /**
+     * Check if the linked list has a loop
+     * @return true if the linked list has a loop, false otherwise
+     */
+    public boolean hasLoop(){
+        Node slow = head;
+        Node fast = head;
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find the kth node from the end of the linked list without using the length
+     * @param k - the kth node from the end
+     * @return the kth node from the end
+     */
+    public Node findKthFromEnd(int k) {
+        Node kthNode = head;
+        Node lastNode = head;
+
+        for(int i = 0; i<k;i++) {
+            if(lastNode == null) {
+                return null;
+            }
+            lastNode = lastNode.next;
+        }
+        while (lastNode != null) {
+
+            lastNode= lastNode.next;
+            kthNode = kthNode.next;
+        }
+        return kthNode;
+    }
+
+    /**
+     * Remove duplicates from the linked list
+     */
+    public void removeDuplicates(){
+        // Brute force O(n^2)
+//        Node current = head;
+//        while(current != null) {
+//            Node runner = current;
+//            while(runner.next!=null) {
+//                if(current.value == runner.next.value) {
+//                    runner.next = runner.next.next;
+//                    length--;
+//                } else {
+//                    runner = runner.next;
+//                }
+//            }
+//            current = current.next;
+//        }
+        // Using HashSet O(n)
+        HashSet<Integer> set = new HashSet();
+        Node current = head;
+        Node previous = null;
+        while(current !=null) {
+            if(set.contains(current.value) != true) {
+                set.add(current.value);
+                previous = current;
+            } else {
+                previous.next = current.next;
+                length--;
+            }
+            current= current.next;
+
         }
     }
 }

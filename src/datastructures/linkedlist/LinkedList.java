@@ -381,4 +381,26 @@ public class LinkedList {
 
         }
     }
+
+    /**
+     * Convert binary linked list to decimal
+     * @return decimal value
+     */
+    public int binaryToDecimal() {
+        Node temp = head;
+        int decimal = 0;
+        // When head has the most significant bit
+        while (temp != null) {
+            decimal = decimal * 2 + temp.value;
+            temp = temp.next;
+        }
+        // When tail has the most significant bit
+//        int i = 0;
+//        while (temp != null) {
+//            decimal += temp.value * Math.pow(2, i);
+//            i++;
+//            temp = temp.next;
+//        }
+        return decimal;
+    }
 }

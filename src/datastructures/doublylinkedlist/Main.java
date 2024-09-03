@@ -29,6 +29,19 @@ public class Main {
 //        System.out.println(myDoublyLinkedList.set(-2, 30));
 //        myDoublyLinkedList.printAll();
 
+        // insert and remove
+//        myDoublyLinkedList.insert(0, 10);
+//        myDoublyLinkedList.insert(1, 15);
+//        myDoublyLinkedList.insert(0, 20);
+//        myDoublyLinkedList.insert(4, 25);
+//        myDoublyLinkedList.printAll();
+//        myDoublyLinkedList.remove(0);
+//        myDoublyLinkedList.printAll();
+//        myDoublyLinkedList.remove(2);
+//        myDoublyLinkedList.printAll();
+//        myDoublyLinkedList.remove(2);
+//        myDoublyLinkedList.printAll();
+
 
     }
 }

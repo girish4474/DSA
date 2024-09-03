@@ -209,4 +209,65 @@ public class DoublyLinkedList {
         }
         return false;
     }
+
+    /**
+     * Insert a new node at the given index
+     * @param index - index of the node
+     * @param value - value to be inserted
+     * @return - true if the value is inserted successfully
+     */
+    public boolean insert(int index, int value) {
+        Node newNode = new Node(value);
+        if (index < 0 || index > length) {
+            return false;
+        }else if(index == 0) {
+            prepend(value);
+            return true;
+        } else if (index == length) {
+            append(value);
+            return true;
+        }
+//        Node temp = get(index);
+//        newNode.next = temp;
+//        newNode.prev = temp.prev;
+//        temp.prev.next = newNode;
+//        temp.prev = newNode;
+//        length++;
+//        return true;
+        Node before = get(index-1);
+        Node after = before.next;
+        newNode.next = after;
+        newNode.prev = before;
+        before.next = newNode;
+        after.prev = newNode;
+        length++;
+        return true;
+    }
+
+    /**
+     * Remove the node at the given index
+     * @param index - index of the node
+     * @return - removed node
+     */
+    public Node remove(int index) {
+        if (index < 0 || index>= length) return null;
+        if (index == 0) {
+            return removeFirst();
+        } else if (index == length-1) {
+            return removeLast();
+        }
+        Node removedNode = get(index);
+//        Node before = removedNode.prev;
+//        Node after = removedNode.next;
+//        before.next = after;
+//        after.prev = before;
+//        removedNode.next = null;
+//        removedNode.prev = null;
+        removedNode.prev.next = removedNode.next;
+        removedNode.next.prev = removedNode.prev;
+        removedNode.next = null;
+        removedNode.prev = null;
+        length--;
+        return removedNode;
+    }
 }

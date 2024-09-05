@@ -270,4 +270,65 @@ public class DoublyLinkedList {
         length--;
         return removedNode;
     }
+
+    /**
+     * ---------------------------------------------------------------------------
+     * LEETCODE PROBLEMS
+     * ---------------------------------------------------------------------------
+     */
+
+    /**
+     * Swap the first and last node
+     */
+    public void swapFirstLast(){
+        if(length < 2) return;
+        // brute force swapping the pointers
+//        head.next.prev = tail;
+//        tail.prev.next = head;
+//        head.prev = tail.prev;
+//        tail.next = head.next;
+//        head.next = null;
+//        tail.prev = null;
+//        Node headTemp = head;
+//        head = tail;
+//        tail = headTemp;
+        // swapping the values
+        int temp = head.value;
+        head.value = tail.value;
+        tail.value = temp;
+    }
+
+    public void reverse() {
+        if(length <= 0) return;
+        // Using before and after pointers
+//        Node temp = head;
+//        head = tail;
+//        tail = temp;
+//        Node after = temp.next;
+//        Node before = null;
+//        for (int i = 0;i<length;i++) {
+//            after = temp.next;
+//            temp.next = before;
+//            temp.prev = after;
+//            before = temp;
+//            temp = after;
+//        }
+
+        Node current = head;
+        Node temp = null;
+
+        while (current != null) {
+            temp = current.prev;
+            // Swap the next and prev pointers
+            current.prev = current.next;
+            current.next = temp;
+            // 'next' node is now in 'current.prev',
+            // so we update 'current' to this node.
+            current = current.prev;
+        }
+
+        temp = head;
+        head = tail;
+        tail = temp;
+    }
 }

@@ -72,6 +72,37 @@ public class Main {
 //        System.out.println("\nDLL after reverse:");
 //        myDLL.printList();
 
+        // isPalindrome
+//        DoublyLinkedList myDLL1 = new DoublyLinkedList(1);
+//        myDLL1.append(2);
+//        myDLL1.append(3);
+//        myDLL1.append(2);
+//        myDLL1.append(1);
+//
+//        System.out.println("myDLL1 isPalindrome:");
+//        System.out.println( myDLL1.isPalindrome() );
+//
+//
+//
+//        DoublyLinkedList myDLL2 = new DoublyLinkedList(1);
+//        myDLL2.append(2);
+//        myDLL2.append(3);
+//
+//        System.out.println("\nmyDLL2 isPalindrome:");
+//        System.out.println( myDLL2.isPalindrome() );
+
+        DoublyLinkedList myDll = new DoublyLinkedList(1);
+        myDll.append(2);
+        myDll.append(3);
+
+        System.out.println("myDll before swapPairs:");
+        myDll.printList();
+
+        myDll.swapPairs();
+
+        System.out.println("\nmyDll after swapPairs:");
+        myDll.printList();
+
 
     }
 }

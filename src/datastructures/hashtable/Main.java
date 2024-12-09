@@ -155,27 +155,180 @@ public class Main {
      * @return an array containing the indices of the two numbers that add up to the target, or an empty array if no such pair exists
      */
     public static int[] twoSum(int[] nums, int target) {
-//        // Brute force method
-        for(int i = 0;i<nums.length-1;i++) {
-            for(int j = i+1;j<nums.length;j++) {
-                if(target-(nums[i]+nums[j]) == 0) {
-                    return new int[]{i,j};
+        // Brute force method
+        if (nums == null || nums.length == 0) {
+            return new int[0]; // Return an empty array
+        }
+        for(int i=0;i<nums.length;i++) {
+            int sum = 0;
+            for (int j=i;j<nums.length;j++) {
+                sum += nums[j];
+                if(sum == target) {
+                    return new int[]{i, j};
                 }
             }
         }
         return new int[0];
-//        // Using a HashMap to store the index of the complement
-//        Map<Integer,Integer> numMap = new HashMap<>();
-//        for (int i=0;i<nums.length;i++) {
-//            int num = nums[i];
-//            int complement = target - num;
-//            if(numMap.containsKey(complement)) {
-//                return new int[]{numMap.get(complement),i};
+//        // Using a HashMap to store the sum and index
+//        // If the current sum - target is in the map, return the index of the sum and the current index
+//        //If currentSum - target exists in the hash map at some index, it means the sum of the elements between that index + 1 and the current index equals target.
+//        if (nums == null || nums.length == 0) {
+//            return new int[0]; // Return an empty array
+//        }
+//        Map<Integer,Integer> sumIndex = new HashMap<>();
+//        sumIndex.put(0,-1);
+//        int currentSum = 0;
+//        for (int i = 0;i<nums.length;i++) {
+//            currentSum += nums[i];
+//            if(sumIndex.containsKey(currentSum-target)) {
+//                return new int[]{sumIndex.get(currentSum-target)+1,i};
 //            } else {
-//                numMap.put(num,i);
+//                sumIndex.put(currentSum,i);
 //            }
 //        }
 //        return new int[0];
+    }
+
+    /**
+     * Removes duplicate integers from a list.
+     *
+     * @param myList the list of integers from which duplicates need to be removed
+     * @return a new list containing only unique integers from the original list
+     */
+    public static List<Integer> removeDuplicates(List<Integer> myList){
+        Set<Integer> uniqueSet = new HashSet<>(myList);
+        return new ArrayList<>(uniqueSet);
+    }
+
+    public static boolean hasUniqueChars(String string) {
+//        // Brute force method - Using size and length
+//        Set<Character> charSet = new HashSet<>();
+//        for (char c : string.toCharArray()) {
+//            charSet.add(c);
+//        }
+//        if(charSet.size() == string.length()) {
+//            return true;
+//        }
+//        return false;
+        // Using contains method
+        Set<Character> charSet = new HashSet<>();
+        for (char ch : string.toCharArray()) {
+            if (charSet.contains(ch)) {
+                return false;
+            }
+            charSet.add(ch);
+        }
+        return true;
+    }
+
+    /**
+     * LEETCODE QUESTION
+     * Finds pairs of integers from two arrays that sum up to a target value.
+     *
+     * @param arr1 the first array of integers
+     * @param arr2 the second array of integers
+     * @param target the target sum for the pairs
+     * @return a list of integer arrays, each containing a pair of integers that sum up to the target value
+     */
+    public static List<int[]> findPairs(int[] arr1, int[] arr2, int target){
+//        // Brute force method
+//        List<int[]> pairsList = new ArrayList<>();
+//        for(int i:arr1) {
+//            for(int j:arr2) {
+//                if (i+j == target) {
+//                    pairsList.add(new int[]{i,j});
+//                }
+//            }
+//        }
+//        return pairsList;
+
+        // Using a HashSet
+        List<int[]> pairsList = new ArrayList<>();
+        Set<Integer> mySet = new HashSet<>();
+        for (int num : arr1) {
+            mySet.add(num);
+        }
+        for (int num:arr2) {
+            int complement = target - num;
+            if(mySet.contains(complement)) {
+                pairsList.add(new int[]{complement,num});
+            }
+        }
+        return pairsList;
+    }
+
+    /**
+     * LEETCODE QUESTION
+     * Finds the length of the longest consecutive elements sequence in an array of integers.
+     *
+     * @param nums the array of integers
+     * @return the length of the longest consecutive elements sequence
+     */
+    public static int longestConsecutiveSequence(int[] nums) {
+//        // Using a sort and HashSet
+//        Arrays.sort(nums);
+//        Set<Integer> numSet = new HashSet<>();
+//        int longestStreak = 0;
+//        int currentStreak = 0;
+//        for (int num:nums) {
+//            if(numSet.contains(num)) {
+//                continue;
+//            }
+//            numSet.add(num);
+//            currentStreak +=1;
+//            if(numSet.contains(num-1)) {
+//                longestStreak = currentStreak;
+//            } else {
+//                currentStreak =1;
+//            }
+//        }
+//        if (currentStreak > longestStreak) { longestStreak = currentStreak;}
+//        return longestStreak;
+
+
+        // Using just HashSet
+        Set<Integer> numSet = new HashSet<>();
+        for (int num:nums) {
+            numSet.add(num);
+        }
+        int longestStreak = 0;
+        for (int num:nums) {
+            if(!numSet.contains(num-1)) {
+                int currentStreak = 1;
+                int currentNum = num;
+                while(numSet.contains(currentNum+1)) {
+                    currentStreak++;
+                    currentNum++;
+                }
+                longestStreak = Math.max(longestStreak,currentStreak);
+            }
+        }
+        return longestStreak;
+    }
+
+    /**
+     * Test method for longestConsecutiveSequence.
+     * @param title Title of the test
+     * @param nums Input array
+     * @param expected Expected result
+     */
+    private static void testLongestConsecutiveSequence(String title, int[] nums, int expected) {
+        System.out.println("Test: " + title);
+        System.out.print("Testing array: ");
+        for (int num : nums) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+
+        int result = longestConsecutiveSequence(nums);
+        System.out.println("Expected longest streak: " + expected);
+        System.out.println("Actual longest streak: " + result);
+
+        if (result == expected) {
+            System.out.println("PASS\n");
+        } else {
+            System.out.println("FAIL\n");
+        }
     }
 
     public static void main(String[] args) {
@@ -251,27 +404,119 @@ public class Main {
 //
 //        */
 
-        // Test cases for twoSum
-        System.out.println(Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9)));
-        System.out.println(Arrays.toString(twoSum(new int[]{3, 2, 4}, 6)));
-        System.out.println(Arrays.toString(twoSum(new int[]{3, 3}, 6)));
-        System.out.println(Arrays.toString(twoSum(new int[]{1, 2, 3, 4, 5}, 10)));
-        System.out.println(Arrays.toString(twoSum(new int[]{1, 2, 3, 4, 5}, 7)));
-        System.out.println(Arrays.toString(twoSum(new int[]{1, 2, 3, 4, 5}, 3)));
-        System.out.println(Arrays.toString(twoSum(new int[]{}, 0)));
+//        // Test cases for twoSum
+//        System.out.println(Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9)));
+//        System.out.println(Arrays.toString(twoSum(new int[]{3, 2, 4}, 6)));
+//        System.out.println(Arrays.toString(twoSum(new int[]{3, 3}, 6)));
+//        System.out.println(Arrays.toString(twoSum(new int[]{1, 2, 3, 4, 5}, 10)));
+//        System.out.println(Arrays.toString(twoSum(new int[]{1, 2, 3, 4, 5}, 7)));
+//        System.out.println(Arrays.toString(twoSum(new int[]{1, 2, 3, 4, 5}, 3)));
+//        System.out.println(Arrays.toString(twoSum(new int[]{}, 0)));
+//
+//        /*
+//            EXPECTED OUTPUT:
+//            ----------------
+//            [0, 1]
+//            [1, 2]
+//            [0, 1]
+//            []
+//            [2, 3]
+//            [0, 1]
+//            []
+//
+//        */
 
-        /*
-            EXPECTED OUTPUT:
-            ----------------
-            [0, 1]
-            [1, 2]
-            [0, 1]
-            []
-            [2, 3]
-            [0, 1]
-            []
+//        // Test cases for subarraySum
+//        int[] nums1 = {1, 2, 3, 4, 5};
+//        int target1 = 9;
+//        int[] result1 = subarraySum(nums1, target1);
+//        System.out.println("[" + result1[0] + ", " + result1[1] + "]");
+//
+//        int[] nums2 = {-1, 2, 3, -4, 5};
+//        int target2 = 0;
+//        int[] result2 = subarraySum(nums2, target2);
+//        System.out.println("[" + result2[0] + ", " + result2[1] + "]");
+//
+//        int[] nums3 = {2, 3, 4, 5, 6};
+//        int target3 = 3;
+//        int[] result3 = subarraySum(nums3, target3);
+//        System.out.println("[" + result3[0] + ", " + result3[1] + "]");
+//
+//        int[] nums4 = {};
+//        int target4 = 0;
+//        int[] result4 = subarraySum(nums4, target4);
+//        System.out.println("[]");
+//
+//        /*
+//            EXPECTED OUTPUT:
+//            ----------------
+//            [1, 3]
+//            [0, 3]
+//            [1, 1]
+//            []
+//
+//        */
 
-        */
+//        // Test cases for removeDuplicates
+//        List<Integer> myList = List.of(1, 2, 3, 4, 1, 2, 5, 6, 7, 3, 4, 8, 9, 5);
+//        List<Integer> newList = removeDuplicates(myList);
+//        System.out.println(newList);
+//
+//        /*
+//            EXPECTED OUTPUT:
+//            ----------------
+//            [1, 2, 3, 4, 5, 6, 7, 8, 9]
+//
+//            (Order may be different as sets are unordered)
+//        */
+
+//        // Test cases for hasUniqueChars
+//        System.out.println(hasUniqueChars("abcdefg")); // should return true
+//        System.out.println(hasUniqueChars("hello")); // should return false
+//        System.out.println(hasUniqueChars("")); // should return true
+//        System.out.println(hasUniqueChars("0123456789")); // should return true
+//        System.out.println(hasUniqueChars("abacadaeaf")); // should return false
+//
+//        /*
+//            EXPECTED OUTPUT:
+//            ----------------
+//            true
+//            false
+//            true
+//            true
+//            false
+//
+//        */
+
+//        // Test cases for findPairs
+//        int[] arr1 = {1, 2, 3, 4, 5};
+//        int[] arr2 = {2, 4, 6, 8, 10};
+//        int target = 7;
+//
+//        List<int[]> pairs = findPairs(arr1, arr2, target);
+//        for (int[] pair : pairs) {
+//            System.out.println(Arrays.toString(pair));
+//        }
+//
+//        /*
+//            EXPECTED OUTPUT:
+//            ----------------
+//            [5, 2]
+//            [3, 4]
+//            [1, 6]
+//
+//        */
+
+        // Test cases for longestConsecutiveSequence
+        testLongestConsecutiveSequence("Consecutive Integers", new int[] {1, 2, 3, 4, 5}, 5);
+        testLongestConsecutiveSequence("No Sequence", new int[] {1, 3, 5, 7, 9}, 1);
+        testLongestConsecutiveSequence("Duplicates", new int[] {1, 2, 2, 3, 4}, 4);
+        testLongestConsecutiveSequence("Negative Numbers", new int[] {1, 0, -1, -2, -3}, 5);
+        testLongestConsecutiveSequence("Empty Array", new int[] {}, 0);
+        testLongestConsecutiveSequence("Multiple Sequences", new int[] {1, 2, 3, 10, 11, 12, 13}, 4);
+        testLongestConsecutiveSequence("Unordered Elements", new int[] {5, 1, 3, 4, 2}, 5);
+        testLongestConsecutiveSequence("Single Element", new int[] {1}, 1);
+        testLongestConsecutiveSequence("All Identical Elements", new int[] {2, 2, 2, 2, 2}, 1);
 
 
 
